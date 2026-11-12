@@ -114,6 +114,7 @@ It overwrites whatever is in the browser, so it asks first.
 | `test.mjs` | the test suite |
 | `og.png` | link preview image |
 | `preview.html` | public page served to crawlers when the app sits behind auth |
+| `preview.js` | language and return link for `preview.html` |
 
 ### Deploying
 
@@ -135,16 +136,18 @@ frame-ancestors 'none'
 behind a login.
 
 - It shows the Criptonautas symbol, the name, what the sheet does, and a button
-  that starts the sign-in and comes back to the sheet.
+  that starts the sign-in and comes back to the exact link you opened, encrypted
+  share links included. Same look as the Files sign-in preview.
 - It carries the same link-preview tags as `index.html`, so a shared link still
   shows its card while the sheet is closed.
-- It holds no data and runs no script: no calculation, nothing stored, nothing
-  sent. Its styles are inline, so it needs nothing from the app.
+- It holds no data: no calculation, nothing stored, nothing sent. Its only script,
+  `preview.js`, picks Spanish or English from the browser and points the button
+  back at the current URL. It needs nothing from the app.
 
 Why a page and not a redirect: without a session the proxy answers 401, and a
 redirect has no body, so the crawler that builds the link preview finds no tags
 and the visitor does not see where they landed. Serve `preview.html` for those
-requests with status 200, and keep `og.png` and `fonts/` outside the login. Its
+requests with status 200, and keep `og.png`, `preview.js` and `fonts/` outside the login. Its
 font URL is absolute because it can be served on any path.
 
 If you fork this, note that `og:url`, `og:image` and the contact links point at

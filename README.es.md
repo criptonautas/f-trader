@@ -122,6 +122,7 @@ que haya en el navegador, así que primero pide confirmación.
 | `test.mjs` | las pruebas |
 | `og.png` | imagen de previsualización |
 | `preview.html` | página pública para los rastreadores cuando la app está detrás de auth |
+| `preview.js` | idioma y enlace de vuelta de `preview.html` |
 
 ### Despliegue
 
@@ -143,16 +144,18 @@ frame-ancestors 'none'
 detrás de un login.
 
 - Muestra el símbolo de Criptonautas, el nombre, qué hace la planilla y un botón
-  que inicia la sesión y vuelve a la planilla.
+  que inicia la sesión y vuelve exactamente al enlace que abriste, incluidos los
+  enlaces cifrados. Tiene el mismo aspecto que la preview de Files.
 - Lleva las mismas etiquetas de previsualización que `index.html`, así un enlace
   compartido sigue mostrando su tarjeta aunque la planilla esté cerrada.
-- No guarda datos ni ejecuta scripts: no calcula, no almacena, no envía nada. Sus
-  estilos están en línea, así que no necesita nada de la app.
+- No guarda datos: no calcula, no almacena, no envía nada. Su único script,
+  `preview.js`, elige español o inglés según el navegador y hace que el botón
+  vuelva a la URL actual. No necesita nada de la app.
 
 Por qué una página y no un redirect: sin sesión el proxy responde 401, y un
 redirect no tiene cuerpo, así que el rastreador que arma la previsualización no
 encuentra las etiquetas y quien llega no ve dónde cayó. Serví `preview.html` para
-esas peticiones con estado 200, y dejá `og.png` y `fonts/` fuera del login. La URL
+esas peticiones con estado 200, y dejá `og.png`, `preview.js` y `fonts/` fuera del login. La URL
 de la fuente es absoluta porque se puede servir en cualquier ruta.
 
 Si lo forkeás, `og:url`, `og:image` y los enlaces de contacto apuntan a
