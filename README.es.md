@@ -137,10 +137,23 @@ font-src 'self'; img-src 'self' data:; form-action 'none'; base-uri 'none';
 frame-ancestors 'none'
 ```
 
-`preview.html` existe para el caso en que la planilla quede detrás de un login:
-un redirect no tiene cuerpo, así que el rastreador que arma la previsualización
-no encuentra las etiquetas. Serví esa página con 200 en lugar de redirigir, y
-dejá `og.png` y `fonts/` fuera del login.
+### Previsualización de inicio de sesión
+
+`preview.html` es la página que ve quien llega sin sesión cuando la planilla está
+detrás de un login.
+
+- Muestra el símbolo de Criptonautas, el nombre, qué hace la planilla y un botón
+  que inicia la sesión y vuelve a la planilla.
+- Lleva las mismas etiquetas de previsualización que `index.html`, así un enlace
+  compartido sigue mostrando su tarjeta aunque la planilla esté cerrada.
+- No guarda datos ni ejecuta scripts: no calcula, no almacena, no envía nada. Sus
+  estilos están en línea, así que no necesita nada de la app.
+
+Por qué una página y no un redirect: sin sesión el proxy responde 401, y un
+redirect no tiene cuerpo, así que el rastreador que arma la previsualización no
+encuentra las etiquetas y quien llega no ve dónde cayó. Serví `preview.html` para
+esas peticiones con estado 200, y dejá `og.png` y `fonts/` fuera del login. La URL
+de la fuente es absoluta porque se puede servir en cualquier ruta.
 
 Si lo forkeás, `og:url`, `og:image` y los enlaces de contacto apuntan a
 `criptonautas.co`: cambialos en `index.html` y `preview.html`, y poné tu dirección

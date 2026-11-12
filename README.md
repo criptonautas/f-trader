@@ -129,10 +129,23 @@ font-src 'self'; img-src 'self' data:; form-action 'none'; base-uri 'none';
 frame-ancestors 'none'
 ```
 
-`preview.html` is there for the case where the sheet sits behind a login: a
-redirect has no body, so the crawler that builds the link preview finds no tags.
-Serve that page with a 200 instead of redirecting, and keep `og.png` and
-`fonts/` outside the login.
+### Sign-in preview
+
+`preview.html` is the page a visitor without a session sees when the sheet sits
+behind a login.
+
+- It shows the Criptonautas symbol, the name, what the sheet does, and a button
+  that starts the sign-in and comes back to the sheet.
+- It carries the same link-preview tags as `index.html`, so a shared link still
+  shows its card while the sheet is closed.
+- It holds no data and runs no script: no calculation, nothing stored, nothing
+  sent. Its styles are inline, so it needs nothing from the app.
+
+Why a page and not a redirect: without a session the proxy answers 401, and a
+redirect has no body, so the crawler that builds the link preview finds no tags
+and the visitor does not see where they landed. Serve `preview.html` for those
+requests with status 200, and keep `og.png` and `fonts/` outside the login. Its
+font URL is absolute because it can be served on any path.
 
 If you fork this, note that `og:url`, `og:image` and the contact links point at
 `criptonautas.co` — change them in `index.html` and `preview.html`, and set
